@@ -24,34 +24,103 @@
 
             <div class="form-group">
                 <label for="glucose">Glucose:</label>
-                <input type="number" id="glucose" name="glucose" required>
+                <div class="number-input">
+                    <input type="number" id="glucose" name="glucose" step="0.01" placeholder="0" required>
+                    <button type="button" class="minus" onclick="changeValue('glucose', -0.01)">-</button>
+                    <button type="button" class="plus" onclick="changeValue('glucose', 0.01)">+</button>
+                </div>
             </div>
 
             <div class="form-group">
                 <label for="insulin">Insulin:&nbsp;&nbsp;</label>
-                <input type="number" id="insulin" name="insulin" required>
+                <div class="number-input">
+                    <input type="number" id="insulin" name="insulin" step="0.01" placeholder="0" required>
+                    <button type="button" class="minus" onclick="changeValue('insulin', -0.01)">-</button>
+                    <button type="button" class="plus" onclick="changeValue('insulin', 0.01)">+</button>
+                </div>
             </div>
 
             <div class="form-group">
                 <label for="bmi">BMI:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
-                <input type="number" step="0.1" id="bmi" name="bmi" required>
+                <div class="number-input">
+                    <input type="number" id="bmi" name="bmi" step="0.01" placeholder="0" required>
+                    <button type="button" class="minus" onclick="changeValue('bmi', -0.01)">-</button>
+                    <button type="button" class="plus" onclick="changeValue('bmi', 0.01)">+</button>
+                </div>
             </div>
 
             <div class="form-group">
                 <label for="age">Age:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
-                <input type="number" id="age" name="age" required>
+                <div class="number-input">
+                    <input type="number" id="age" name="age" step="1" placeholder="0" required>
+                    <button type="button" class="minus" onclick="changeValue('age', -1)">-</button>
+                    <button type="button" class="plus" onclick="changeValue('age', 1)">+</button>
+                </div>
             </div>
 
-            <button type="submit">Predict</button>
+            <button id="predict-btn" type="submit">Predict</button>
         </form>
+
+        <!-- Result display section -->
+        <div id="result-section">
+            <h2>Prediction Result:</h2>
+            {% if result %}
+                <p>{{ result }}</p>
+                {% if result == "Diabetic" %}
+                <h3>Suggestions:</h3>
+                <ul>
+                    <li>Maintain a healthy diet with low sugar and carbohydrates.</li>
+                    <li>Engage in regular physical exercise.</li>
+                    <li>Monitor blood sugar levels regularly.</li>
+                    <li>Follow your doctor's advice regarding medication and lifestyle changes.</li>
+                </ul>
+                {% elif result == "Non-Diabetic" %}
+                <h3>Suggestions:</h3>
+                <ul>
+                    <li>Maintain your current healthy lifestyle.</li>
+                    <li>Continue with regular physical activity.</li>
+                    <li>Have a balanced diet to avoid future risks.</li>
+                    <li>Schedule regular health checkups to monitor your glucose levels.</li>
+                </ul>
+                {% elif result == "No input is specified" %}
+                <p class="no-result">No input is specified. Please fill out the form and try again.</p>
+                {% endif %}
+            {% else %}
+                <p class="no-result">No result yet. Please fill out the form and click "Predict" to get the result.</p>
+            {% endif %}
+        </div>
     </article>
 
     <script>
-        const result = "{{ result }}";
-        const selectedModel = "{{ selected_model }}";
-        if (result && selectedModel) {
-            alert("Predicted by the " +selectedModel+ " is "+ result);
+        function changeValue(inputId, step) {
+            const input = document.getElementById(inputId);
+            let currentValue = parseFloat(input.value) || 0;
+    
+            // Check if the input field is for "age"
+            if (inputId === "age") {
+                currentValue = Math.round(currentValue); // Ensure the current value is an integer
+                const newValue = currentValue + step;
+    
+                if (newValue >= 0) {
+                    input.value = newValue; // Set as an integer
+                }
+            } else {
+                const newValue = currentValue + step;
+    
+                if (newValue >= 0) {
+                    input.value = newValue.toFixed(2); // Set as a float with 2 decimal places
+                }
+            }
         }
+    
+        document.addEventListener('DOMContentLoaded', () => {
+    const resultSection = document.getElementById('result-section');
+    if (resultSection.innerHTML.trim() !== '') {
+        resultSection.classList.add('active');
+    } else {
+        resultSection.classList.remove('active');
+    }
+});
     </script>
 </body>
 </html>
