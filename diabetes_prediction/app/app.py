@@ -20,32 +20,52 @@ scaler = pickle.load(open(scaler_path, 'rb'))
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    result = None
+    result = "No input is specified"
     selected_model = None
+    form_values = {"glucose": "", "insulin": "", "bmi": "", "age": ""}
 
-    if request.method == 'POST':  # Ensure the form is submitted via POST
-        # Getting the form input values
-        glucose = float(request.form['glucose'])
-        insulin = float(request.form['insulin'])
-        bmi = float(request.form['bmi'])
-        age = int(request.form['age'])
-        selected_model = request.form['model']
+    if request.method == 'POST':
+        try:
+            # Extract input values
+            glucose = request.form.get('glucose', "").strip()
+            insulin = request.form.get('insulin', "").strip()
+            bmi = request.form.get('bmi', "").strip()
+            age = request.form.get('age', "").strip()
+            selected_model = request.form.get('model', None)
 
-        # Load the selected model
-        model = models.get(selected_model)
-        if model is None:
-            result = "Invalid model selected"
-        else:
-            # Prepare input features and scale them
-            features = np.array([[glucose, insulin, bmi, age]])
-            features_scaled = scaler.transform(features)
+            # Preserve form values for re-rendering
+            form_values = {"glucose": glucose, "insulin": insulin, "bmi": bmi, "age": age}
 
-            # Predict using the selected model
-            prediction = model.predict(features_scaled)
-            result = "Diabetic" if prediction[0] == 1 else "Non-Diabetic"
+            # Validate inputs
+            if all([glucose, insulin, bmi, age, selected_model]):
+                glucose = float(glucose)
+                insulin = float(insulin)
+                bmi = float(bmi)
+                age = int(age)
+
+                # Retrieve selected model
+                model = models.get(selected_model)
+                if model:
+                    # Scale input and predict
+                    features = np.array([[glucose, insulin, bmi, age]])
+                    features_scaled = scaler.transform(features)
+                    prediction = model.predict(features_scaled)
+                    result = "Diabetic" if prediction[0] == 1 else "Non-Diabetic"
+                else:
+                    result = "Invalid model selected."
+            else:
+                result = "No input is specified. Please fill out all fields."
+
+        except ValueError:
+            # Handle invalid numeric inputs
+            result = "Invalid input. Please enter valid numeric values."
 
     return render_template(
-        'index.html', result=result, models=list(model_paths.keys()), selected_model=selected_model
+        'index.html',
+        result=result,
+        models=list(model_paths.keys()),
+        selected_model=selected_model,
+        form_values=form_values
     )
 
 if __name__ == '__main__':
