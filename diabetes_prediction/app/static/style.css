@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Open+Sans');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
 
 * {
     box-sizing: border-box;
@@ -9,67 +9,149 @@ html, body {
     height: 100%;
     margin: 0;
     padding: 0;
-    font-family: 'Open Sans', sans-serif;
+    font-family: 'Roboto', sans-serif;
+    background: linear-gradient(to right, #6a11cb, #2575fc);
     color: #fff;
     font-size: 18px;
     text-align: center;
     letter-spacing: 1.2px;
     display: flex;
-    justify-content: center;
-    align-items: center;
     background-image: url('images/img.jpg'); /* Ensure this path matches the actual image location */
     background-size: cover;
-    background-repeat: no-repeat;
     background-position: center center;
+    justify-content: center;
+    align-items: center;
+}
+
+article {
+    display: flex;
+    flex-direction: row;
+    width: 90%;
+    max-width: 1200px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    transition: min-height 0.3s ease; /* Smooth transition */
 }
 
 form {
-    background-color: rgba(0, 0, 0, 0.6);
+    flex: 1;
     padding: 30px;
-    border-radius: 10px;
+    background-color: rgba(0, 0, 0, 0.6);
+    border-radius: 12px 0 0 12px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
-    width: 100%;
-    max-width: 500px;
-    animation: fadeIn 1.2s ease-in-out;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);  
 }
 
-h1 {
+form h1 {
     text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
-    letter-spacing: 1px;
+    color: #333;
+    font-size: 24px;
+    font-weight: 700;
     margin-bottom: 20px;
-    font-size: 26px;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
 }
 
 .form-group {
     display: flex;
-    align-items: center;
+    flex-direction: column;
     margin-bottom: 20px;
 }
 
 .form-group label {
-    margin-right: 10px;
+    margin-bottom: 8px;
     color: #fff;
+    font-weight: 500;
     font-size: 16px;
 }
 
 .form-group input, .form-group select {
-    width: 100%;
     padding: 12px;
-    font-size: 14px;
+    font-size: 16px;
     color: #fff;
     background: rgba(0, 0, 0, 0.5);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    border-radius: 5px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 8px;
     box-shadow: inset 0 -5px 45px rgba(100, 100, 100, 0.2), 0 1px 1px rgba(255, 255, 255, 0.2);
-    transition: box-shadow 0.3s ease, transform 0.3s ease;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .form-group input:focus, .form-group select:focus {
+    border-color: #2575fc;
     box-shadow: inset 0 -5px 45px rgba(100, 100, 100, 0.4), 0 1px 1px rgba(255, 255, 255, 0.3);
     transform: scale(1.02);
 }
 
-button {
+ /* Remove default numeric input arrows */
+ input[type="number"]::-webkit-inner-spin-button,
+ input[type="number"]::-webkit-outer-spin-button {
+     -webkit-appearance: none;
+     margin: 0;
+ }
+
+ input[type="number"] {
+     appearance: textfield; /* For other browsers */
+ }
+
+.number-input {
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.number-input input {
+    flex: 1;
+    width: calc(max-width); /* Leaves room for buttons */
+    padding: 12px;
+    font-size: 16px; /* Slightly larger font */
+    color: #fff;
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 5px;
+    text-align: left;
+    box-shadow: inset 0 -5px 45px rgba(100, 100, 100, 0.2), 0 1px 1px rgba(255, 255, 255, 0.2);
+}
+
+.number-input button {
+    padding: 8px 12px;
+    position: absolute;
+    right: 0;
+    height: 100%;
+    width: 35px;
+    color: white;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background-color 0.3s ease;
+}
+
+.number-input button.plus {
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+.number-input button.minus {
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    right: 35px;
+}
+
+.number-input button:hover {
+    background: rgba(0, 0, 0, 0.7);
+}
+
+#predict-btn {
     width: 100%;
     padding: 12px;
     background-color: #4a77d4;
@@ -81,24 +163,18 @@ button {
     text-align: center;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
     transition: background-color 0.3s ease, transform 0.2s ease;
+    margin-top: 20px;
 }
 
-button:hover {
+#predict-btn:hover {
     background-color: #3762bc;
     transform: translateY(-2px);
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
 }
 
-button:active {
+#predict-btn:active {
     transform: translateY(1px);
     box-shadow: 0 3px 8px rgba(0, 0, 0, 0.4);
-}
-
-h2 {
-    margin-top: 20px;
-    color: #fff;
-    font-size: 20px;
-    animation: fadeIn 1.5s ease-in-out;
 }
 
 /* Animations */
@@ -121,4 +197,102 @@ input:hover, select:hover {
 /* Add smooth transitions to all elements */
 * {
     transition: all 0.3s ease;
+}
+
+#result-section {
+    flex: 1;
+    padding: 20px;
+    background-color: rgba(0, 0, 0, 0.8);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+    animation: fadeIn 1.5s ease-in-out;
+    visibility: hidden; /* Hide but retain space */
+    opacity: 0; /* Fade effect */
+    transition: visibility 0s 0.3s, opacity 0.3s ease; /* Smooth fade-in/out */
+}
+
+#result-section.active {
+    visibility: visible; /* Show when active */
+    opacity: 1; /* Fully visible */
+    transition: opacity 0.3s ease; /* Smooth fade-in */
+}
+
+.suggestion-container {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 20px;
+}
+
+#result-section h2 {
+    font-size: 24px;
+    font-weight: bold;
+    color: aliceblue;
+    margin-bottom: 20px;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
+}
+
+#result-section h3 {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 5px;
+    text-align: left;
+}
+
+#result-section p {
+    font-size: 18px;
+    margin-bottom: 15px;
+    color: #fff;
+}
+
+#result-section ul {
+    list-style: disc;
+    padding-left: 20px;
+    text-align: left;
+    color: #fff;
+    font-size: 16px;
+}
+
+#result-section li {
+    margin-bottom: 10px;
+    font-size: 16px;
+}
+
+
+/* Smooth transitions for hover effects */
+input:hover, select:hover, button:hover {
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
+}
+
+/* Keyframe animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+#result-section {
+    animation: fadeIn 1.5s ease-in-out;
+}
+
+/* Add media query for responsiveness */
+@media (max-width: 768px) {
+    article {
+        flex-direction: column;
+        height: auto;
+    }
+
+    form, #result-section {
+        border-radius: 12px;
+    }
+
+    #result-section {
+        margin-top: 20px;
+    }
 }
